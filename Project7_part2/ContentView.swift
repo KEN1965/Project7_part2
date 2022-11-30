@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+//新しいビューを作成
 
 struct ContentView: View {
     //1.ExpenseItem構造体ファイルを作成
     //2.Expenses classファイルを作成
     //3.クラスインスタンスを作成
     @StateObject var expenses = Expenses()
+    //AddViewを表示させるState
+    @State private var showingExpense = false
     
     var body: some View {
         NavigationView {
@@ -25,11 +28,13 @@ struct ContentView: View {
             .navigationTitle("iExpense")
             .toolbar {
                 Button {
-                    let expense = ExpenseItem(name: "Test", type: "personal", amount: 5)
-                    expenses.items.append(expense)
+                    showingExpense = true
                 } label: {
                     Image(systemName: "plus")
                 }
+            }
+            .sheet(isPresented: $showingExpense) {
+                AddView(expenses: expenses)
             }
         }
     }
