@@ -10,6 +10,8 @@ import SwiftUI
 struct AddView: View {
     //ContentViewでデータが扱えるように
     @ObservedObject var expenses: Expenses
+    //Saveボタンを押すと、AddViewが閉じるようにしていきます
+    @Environment(\.dismiss) var dismiss
     
     //AddViewでデータを扱えるように
     @State private var name = ""
@@ -32,7 +34,14 @@ struct AddView: View {
                 TextField("Amount", value: $amount, format: .currency(code: "USD"))
                     .keyboardType(.decimalPad)
             }
-            .navigationTitle("Add new expense")
+            .navigationTitle("Add new expense")//ツールバーにセーブボタンを配置
+            .toolbar {
+                Button("Save") {
+                    let item = ExpenseItem(name: name, type: type, amount: amount)
+                    expenses.items.append(item)
+                    dismiss()
+                }
+            }
         }
     }
 }
